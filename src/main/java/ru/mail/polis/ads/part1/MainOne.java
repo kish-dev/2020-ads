@@ -1,22 +1,16 @@
-package ru.mail.polis.ads;
+package ru.mail.polis.ads.part1;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.StringTokenizer;
 
 /**
  * Problem solution template.
  */
-public final class SolveTemplate {
-    private SolveTemplate() {
-        // Should not be instantiated
-    }
 
+public class MainOne {
     private static void solve(final FastScanner in, final PrintWriter out) {
-        // Write me
+        int i = Integer.parseInt(in.next());
+        out.write(i / 10 + " " + i % 10);
     }
 
     private static class FastScanner {
