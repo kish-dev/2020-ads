@@ -229,21 +229,21 @@ public class AvlBst<Key extends Comparable<Key>, Value>
         return temp.value;
     }
 
-    private Node floorNode(Node node, Key key) {
-        if (size(node) == 0) {
+    private Node floorNode(Node root, Key key) {
+        if (size(root) == 0) {
             return null;
         }
 
         int compare = root.key.compareTo(key);
         if (compare == 0)
-            return node;
+            return root;
 
-        if (compare < 0)
-            return floorNode(node.left, key);
+        if (compare > 0)
+            return floorNode(root.left, key);
 
-        Node right = floorNode(node.right, key);
+        Node right = floorNode(root.right, key);
 
-        return right == null ? node : right;
+        return right == null ? root : right;
     }
 
     @Override
