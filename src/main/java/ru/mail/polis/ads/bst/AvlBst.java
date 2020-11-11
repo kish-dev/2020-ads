@@ -29,10 +29,11 @@ public class AvlBst<Key extends Comparable<Key>, Value>
         if (root == null) {
             return null;
         }
-        if (root.key.compareTo(key) > 0) {
+        int compare = root.key.compareTo(key);
+        if (compare > 0) {
             return get(root.left, key);
         }
-        if (root.key.compareTo(key) < 0) {
+        if (compare < 0) {
             return get(root.right, key);
         }
         return root.value;
@@ -54,9 +55,10 @@ public class AvlBst<Key extends Comparable<Key>, Value>
             ++size;
             return new Node(key, value, 1);
         }
-        if (root.key.compareTo(key) > 0) {
+        int compare = root.key.compareTo(key);
+        if (compare > 0) {
             root.left = put(root.left, key, value);
-        } else if (root.key.compareTo(key) < 0) {
+        } else if (compare < 0) {
             root.right = put(root.right, key, value);
         } else {
             root.value = value;
@@ -141,9 +143,10 @@ public class AvlBst<Key extends Comparable<Key>, Value>
         if (root == null) {
             return null;
         }
-        if (root.key.compareTo(key) > 0) {
+        int compare = root.key.compareTo(key);
+        if (compare > 0) {
             root.left = delete(root.left, key);
-        } else if (root.key.compareTo(key) < 0) {
+        } else if (compare < 0) {
             root.right = delete(root.right, key);
         } else if (root.key.compareTo(key) == 0) {
             root = innerDelete(root);
@@ -231,10 +234,11 @@ public class AvlBst<Key extends Comparable<Key>, Value>
             return null;
         }
 
-        if (key.compareTo(node.key) == 0)
+        int compare = root.key.compareTo(key);
+        if (compare == 0)
             return node;
 
-        if (key.compareTo(node.key) < 0)
+        if (compare < 0)
             return floorNode(node.left, key);
 
         Node right = floorNode(node.right, key);
