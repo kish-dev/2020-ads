@@ -14,7 +14,7 @@ class HashTableBaseTest {
 
     HashTable<String, String> newTable() {
         // Use implementation
-        return null;
+        return new Table<>();
     }
 
     @Test
@@ -117,6 +117,7 @@ class HashTableBaseTest {
 
         table.put("testStringKey", "testStringValue");
         assertTrue(table.containsKey("testStringKey"));
+        table.containsKey("testStringKey");
         assertFalse(table.containsKey("testStringKey1"));
 
         table.put("testStringKey1", "testStringValue1");
