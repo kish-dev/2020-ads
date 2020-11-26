@@ -28,24 +28,21 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
         }
 
         private Node<Key, Value> head;
-        private Node<Key, Value> tail;
-        int size = 0;
+//        private Node<Key, Value> tail;
+//        int size = 0;
 
         List() {
             head = null;
-            tail = null;
+//            tail = null;
         }
 
         Node get(Key key) {
             Node temp = head;
-            while (temp != tail) {
+            while (temp != null) {
                 if (temp.key == key) {
                     return temp;
                 }
                 temp = temp.next;
-            }
-            if (tail != null && tail.key == key) {
-                return tail;
             }
             return null;
         }
@@ -68,20 +65,13 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
             if (head.key == key) {
                 value = head.value;
                 head = head.next;
-                --size;
             } else {
                 Node temp = head;
                 Node prev = temp;
                 while (temp.next != null) {
-                    if (temp.key == key) {
+                    if (temp.key.equals(key)) {
                         value = (Value) temp.value;
-                        if (temp == tail) {
-                            tail = prev;
-                            tail.next = null;
-                        } else {
-                            prev.next = temp.next;
-                        }
-                        --size;
+                        prev.next = temp.next;
                     }
                 }
             }
@@ -90,44 +80,30 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
 
         boolean add(Key key, Value value) {
             if (head == null) {
-                ++size;
                 head = new Node<>(key, value, null);
-                tail = head;
                 return true;
-            } else if (head == tail) {
+            } else if (head.next == null) {
                 if (head.key == key) {
                     head.value = value;
-                    tail = head;
                     return false;
                 } else {
-                    ++size;
-                    tail = new Node<>(key, value, null);
-                    head.next = tail;
+                    head.next = new Node<>(key, value, null);
                     return true;
                 }
             } else {
                 Node temp = head;
-                while (temp != tail) {
+                while (temp != null) {
                     if (temp.key.equals(key)) {
                         temp.value = value;
                         return false;
                     }
                     temp = temp.next;
                 }
-                if (tail != null && tail.key.equals(key)) {
-                    tail.value = value;
-                    return false;
-                }
-                ++size;
-                Node temp1 = tail;
-                tail = new Node<>(key, value, null);
-                temp1.next = tail;
+
+                temp = head;
+                head = new Node<>(key, value, temp);
                 return true;
             }
-        }
-
-        int size() {
-            return size;
         }
 
         boolean contains(Key key) {
@@ -135,14 +111,11 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
                 return false;
             }
             Node temp = head;
-            while (temp != tail) {
+            while (temp != null) {
                 if (temp.key == key) {
                     return true;
                 }
                 temp = temp.next;
-            }
-            if (tail != null && tail.key.equals(key)) {
-                return true;
             }
             return false;
         }
@@ -194,11 +167,9 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
                 if (temp == null) {
                     continue;
                 }
-                while (temp.equals(prevTable[i].tail)) {
+                while (temp != null) {
                     this.put((Key) temp.key, (Value) temp.value);
-                }
-                if (prevTable[i].tail != null) {
-                    this.put(prevTable[i].tail.key, prevTable[i].tail.value);
+                    temp = temp.next;
                 }
             }
         }
