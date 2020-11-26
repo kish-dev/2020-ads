@@ -108,13 +108,13 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
             } else {
                 Node temp = head;
                 while (temp != tail) {
-                    if (temp.key == key) {
+                    if (temp.key.equals(key)) {
                         temp.value = value;
                         return false;
                     }
                     temp = temp.next;
                 }
-                if (tail != null && tail.key == key) {
+                if (tail != null && tail.key.equals(key)) {
                     tail.value = value;
                     return false;
                 }
@@ -141,7 +141,7 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
                 }
                 temp = temp.next;
             }
-            if (tail != null && tail.key == key) {
+            if (tail != null && tail.key.equals(key)) {
                 return true;
             }
             return false;
@@ -194,7 +194,7 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
                 if (temp == null) {
                     continue;
                 }
-                while (temp != prevTable[i].tail) {
+                while (temp.equals(prevTable[i].tail)) {
                     this.put((Key) temp.key, (Value) temp.value);
                 }
                 if (prevTable[i].tail != null) {
