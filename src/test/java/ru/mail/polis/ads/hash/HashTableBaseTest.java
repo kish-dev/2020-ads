@@ -38,15 +38,15 @@ class HashTableBaseTest {
             return Objects.hash(value);
         }
     }
-    
+
     HashTable<String, String> newTable() {
         // Use implementation
         return new Table<>();
     }
-    
+
     HashTable<Key, String> newStrangeKeyTable() {
         // Use implementation
-        return null;
+        return new Table<>();
     }
 
     @Test
@@ -214,6 +214,7 @@ class HashTableBaseTest {
         assertEquals(table.get(new String("1")), "testStringValue3");
 
         table.put(new String("1"), "testStringValue4");
+        table.get("1");
         assertEquals(table.get("1"), "testStringValue4");
 
         table.put(new String("1"), "testStringValue2");
@@ -238,7 +239,7 @@ class HashTableBaseTest {
             reference.put(key, value);
         }
         assertEquals(reference.size(), table.size());
-        for (Map.Entry<Key, String> entry: reference.entrySet()) {
+        for (Map.Entry<Key, String> entry : reference.entrySet()) {
             assertEquals(entry.getValue(), table.get(new Key(entry.getKey().value)));
         }
     }
@@ -254,7 +255,7 @@ class HashTableBaseTest {
             reference.put(key, value);
         }
         assertEquals(reference.size(), table.size());
-        for (Map.Entry<Key, String> entry: reference.entrySet()) {
+        for (Map.Entry<Key, String> entry : reference.entrySet()) {
             assertEquals(entry.getValue(), table.get(new Key(entry.getKey().value)));
         }
     }

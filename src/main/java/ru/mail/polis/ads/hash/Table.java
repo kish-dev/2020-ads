@@ -13,33 +13,31 @@ import java.util.LinkedList;
 
 public class Table<Key, Value> implements HashTable<Key, Value> {
 
+    private class Node<Key, Value> {
+        public final Key key;
+        public Value value;
+        public Node<Key, Value> next;
+
+        Node(Key key, Value value, Node<Key, Value> next) {
+            this.key = key;
+            this.value = value;
+            this.next = next;
+        }
+    }
+
     private class List<Key, Value> {
 
-        public class Node<Key, Value> {
-            public final Key key;
-            public Value value;
-            public Node<Key, Value> next;
-
-            Node(Key key, Value value, Node<Key, Value> next) {
-                this.key = key;
-                this.value = value;
-                this.next = next;
-            }
-        }
 
         private Node<Key, Value> head;
-//        private Node<Key, Value> tail;
-//        int size = 0;
 
         List() {
             head = null;
-//            tail = null;
         }
 
         Node get(Key key) {
             Node temp = head;
             while (temp != null) {
-                if (temp.key == key) {
+                if (temp.key.equals(key)) {
                     return temp;
                 }
                 temp = temp.next;
@@ -62,7 +60,7 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
             if (head == null) {
                 return null;
             }
-            if (head.key == key) {
+            if (head.key.equals(key)) {
                 value = head.value;
                 head = head.next;
             } else {
@@ -83,7 +81,7 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
                 head = new Node<>(key, value, null);
                 return true;
             } else if (head.next == null) {
-                if (head.key == key) {
+                if (head.key.equals(key)) {
                     head.value = value;
                     return false;
                 } else {
@@ -158,18 +156,21 @@ public class Table<Key, Value> implements HashTable<Key, Value> {
 
     void resizeIfNeed() {
         if (loadFactor() > loadFactor) {
-            int newM = this.m * 2;
-            List<Key, Value>[] prevTable = this.hashTable;
-            this.hashTable = new List[newM];
+            int oldM = m;
+            List<Key, Value>[] prevTable = hashTable;
+            n = 0;
+            m *= 2;
+            hashTable = new List[m];
             for (int i = 0; i < m; ++i) {
-                this.hashTable[i] = new List<>();
-                List.Node temp = prevTable[i].head;
-                if (temp == null) {
-                    continue;
-                }
-                while (temp != null) {
-                    this.put((Key) temp.key, (Value) temp.value);
-                    temp = temp.next;
+                hashTable[i] = new List<>();
+            }
+            for (int i = 0; i < oldM; ++i) {
+                if (prevTable[i] != null) {
+                    Node<Key, Value> temp = prevTable[i].head;
+                    while (temp != null) {
+                        this.put(temp.key, temp.value);
+                        temp = temp.next;
+                    }
                 }
             }
         }
